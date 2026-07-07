@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { DrinkButton } from "./DrinkButton";
+import { DrinkCelebration } from "./DrinkCelebration";
 import { FloatingDrop } from "./FloatingDrop";
 import { SettingsModal } from "./SettingsModal";
 import { WaterTank } from "./WaterTank";
@@ -30,6 +31,7 @@ export function AquariumScreen() {
   const [state, setState] = useState<AppState | null>(null);
   const [settingsVisible, setSettingsVisible] = useState(false);
   const [drops, setDrops] = useState<{ id: number; left: number }[]>([]);
+  const [celebrating, setCelebrating] = useState(false);
   const controlsRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -63,6 +65,8 @@ export function AquariumScreen() {
       const left = 16 + buttonIndex * (buttonWidth + 10) + buttonWidth / 2 - 13;
       setDrops((current) => [...current, { id: dropIdCounter++, left }]);
     }
+
+    setCelebrating(true);
   };
 
   const removeDrop = (id: number) => {
@@ -110,6 +114,10 @@ export function AquariumScreen() {
       {drops.map((drop) => (
         <FloatingDrop key={drop.id} left={drop.left} onDone={() => removeDrop(drop.id)} />
       ))}
+
+      {celebrating && (
+        <DrinkCelebration goalReached={goalReached} onConfirm={() => setCelebrating(false)} />
+      )}
 
       {settingsVisible && (
         <SettingsModal
