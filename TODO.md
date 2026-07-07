@@ -1,19 +1,23 @@
 # Aquário da Sede — plano e TODO
 
-App em React Native (Expo) para incentivar uma criança pequena a beber água.
-Tela única com um aquário animado: a água sobe conforme a criança bebe, até
-bater a meta diária. Sem backend — tudo salvo no aparelho.
+PWA (Next.js) para incentivar uma criança pequena a beber água. Tela única
+com um aquário animado: a água sobe conforme a criança bebe, até bater a
+meta diária. Sem backend — tudo salvo no navegador (`localStorage`).
 
 Código (variáveis, componentes, arquivos) em **inglês**. Textos exibidos na
 tela em **pt-BR**.
 
 ## Stack
 
-- Expo (React Native + TypeScript)
-- `AsyncStorage` para persistência local (sem backend, sem conta)
-- `react-native-svg` para os peixes/plantas vetoriais
-- `react-native-reanimated` (ou `Animated` da própria RN) para o nível da
-  água e a natação dos peixes
+- Next.js (App Router + TypeScript), deploy na Vercel
+- `localStorage` para persistência local (sem backend, sem conta)
+- SVG + CSS (keyframes/transitions) para os peixes, a água e as animações —
+  sem libs de animação externas
+- Manifest + service worker próprios para instalar como PWA (sem `next-pwa`)
+
+> Já foi um app Expo/React Native — migrado pra Next.js pra rodar como PWA
+> (instala direto do navegador, sem Expo Go/App Store/SDK compat) e fazer
+> deploy contínuo na Vercel.
 
 ## Modelo de dados (local)
 
@@ -41,7 +45,8 @@ precisar zerar nada manualmente.
       adulto configurar meta/perfis.
 - [x] Aquário: nível da água = `amountMl / dailyGoalMl`, com animação de
       subida suave a cada toque.
-- [x] Peixes nadando (SVG + `Animated`), várias no mesmo tanque para dar vida.
+- [x] Peixes nadando (SVG + CSS keyframes), várias no mesmo tanque para dar
+      vida.
 - [x] 3 botões fixos de copo (pouco / médio / cheio, sem texto — a criança
       ainda não lê): valores editáveis nos ajustes.
 - [x] Sem números na tela principal para a criança — só o desenho subindo.
@@ -50,16 +55,17 @@ precisar zerar nada manualmente.
       um "gulp" (bounce + flash) e solta bolhas extras na água.
 - [x] Modal de ajustes (adulto): definir meta diária em ml, editar nome da
       criança, **zerar a água de hoje**.
-- [x] Persistência via AsyncStorage, reset automático à meia-noite (baseado
-      na data do dia).
+- [x] Persistência via `localStorage`, reset automático à meia-noite
+      (baseado na data do dia).
+- [x] PWA instalável (manifest + ícones + service worker básico).
 - [ ] Editar os valores dos 3 tamanhos de copo (hoje fixos em 100/200/350 ml
       no código).
 - [ ] Cadastrar/editar múltiplos perfis de criança pelos ajustes.
 
 ## Fora do MVP (backlog para depois)
 
-- [ ] Notificação lembrando de beber água (`expo-notifications`, ainda sem
-      backend).
+- [ ] Notificação lembrando de beber água (Web Push — precisa de permissão
+      do usuário e é limitado em iOS Safari).
 - [ ] Histórico semanal simples (quantos dias a meta foi batida).
 - [ ] Sons/vozes de incentivo ao tocar nos botões ou ao completar a meta.
 - [ ] Múltiplos temas de aquário (dia/noite, fundo do mar, etc).
@@ -69,9 +75,9 @@ precisar zerar nada manualmente.
 
 ## Decisões já tomadas
 
-- Sem backend, sem login — 100% offline, um único dispositivo.
+- Sem backend, sem login — 100% offline, um único dispositivo/navegador.
 - App gratuito, sem anúncios previstos no MVP.
 - Uma tela só; ajustes ficam atrás da engrenagem para não distrair a
   criança.
-- Mockup visual de referência: ver artifact "Aquário da Sede — mockup"
-  (aquario-mockup.html no scratchpad da sessão que gerou este plano).
+- PWA em vez de app nativo: instala direto do Safari/Chrome, sem loja e sem
+  builds nativos; deploy é só dar push (Vercel builda e publica).

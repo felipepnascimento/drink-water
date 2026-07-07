@@ -1,0 +1,70 @@
+.tank {
+  position: relative;
+  flex: 1;
+  border-radius: 26px;
+  overflow: hidden;
+  background: #cdeef0;
+  margin: 8px 14px 0;
+  transition: transform 130ms ease-out;
+}
+
+.bounce {
+  transform: scale(1.035);
+}
+
+.water {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, #6fd9d1 0%, #1f9bab 45%, #0f6e82 100%);
+  transition: height 700ms ease;
+}
+
+.sand {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 10%;
+  background: #c99a5b;
+}
+
+.flash {
+  position: absolute;
+  inset: 0;
+  background: white;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 480ms ease-out;
+}
+
+.flash.on {
+  opacity: 0.4;
+  transition: opacity 110ms ease-in;
+}
+
+.burstBubble {
+  position: absolute;
+  bottom: 34%;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.75);
+  animation: burstRise 900ms ease-out forwards;
+}
+
+@keyframes burstRise {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  80% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-90px);
+    opacity: 0;
+  }
+}

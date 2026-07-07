@@ -1,0 +1,81 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 60, 63, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  z-index: 50;
+}
+
+.card {
+  width: 100%;
+  max-width: 340px;
+  background: var(--paper);
+  border-radius: 20px;
+  padding: 20px;
+}
+
+.title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+
+.fieldLabel {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--ink-soft);
+  margin-top: 10px;
+}
+
+.input {
+  width: 100%;
+  border: 1px solid var(--paper-edge);
+  border-radius: 12px;
+  padding: 10px 12px;
+  font-size: 15px;
+  color: var(--ink);
+  margin-top: 4px;
+}
+
+.resetButton {
+  width: 100%;
+  margin-top: 18px;
+  padding: 10px 0;
+  border-radius: 14px;
+  text-align: center;
+  background: #fdeceb;
+  color: #c0392b;
+  font-weight: 700;
+  font-size: 13px;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.secondaryButton {
+  flex: 1;
+  padding: 12px 0;
+  border-radius: 14px;
+  text-align: center;
+  background: var(--background);
+  color: var(--ink-soft);
+  font-weight: 700;
+}
+
+.primaryButton {
+  flex: 1;
+  padding: 12px 0;
+  border-radius: 14px;
+  text-align: center;
+  background: #1f9bab;
+  color: white;
+  font-weight: 800;
+}

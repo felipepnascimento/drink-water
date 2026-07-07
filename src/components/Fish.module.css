@@ -1,0 +1,44 @@
+.fish {
+  position: absolute;
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+}
+
+.swimLTR {
+  animation-name: swimLTR;
+}
+
+.swimRTL {
+  animation-name: swimRTL;
+}
+
+@keyframes swimLTR {
+  from {
+    left: -14%;
+  }
+  to {
+    left: 112%;
+  }
+}
+
+@keyframes swimRTL {
+  from {
+    left: 112%;
+  }
+  to {
+    left: -14%;
+  }
+}
+
+.bob {
+  animation: bob 1.4s ease-in-out infinite alternate;
+}
+
+@keyframes bob {
+  from {
+    transform: translateY(-3px);
+  }
+  to {
+    transform: translateY(3px);
+  }
+}
