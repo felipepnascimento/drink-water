@@ -14,8 +14,25 @@ const MESSAGES = [
   "Você é demais!",
 ];
 
-const CONFIRM_ICONS = ["👍", "⭐", "🙌", "✨"];
 const CONFETTI_EMOJI = ["💧", "⭐", "✨", "🎉"];
+
+function StarIcon() {
+  return (
+    <svg width={52} height={52} viewBox="0 0 24 24" fill="white">
+      <path d="M12 2.5l2.76 6.12 6.74.62-5.1 4.5 1.54 6.6L12 16.9l-5.94 3.44 1.54-6.6-5.1-4.5 6.74-.62L12 2.5z" />
+    </svg>
+  );
+}
+
+function ThumbsUpIcon() {
+  return (
+    <svg width={50} height={50} viewBox="0 0 24 24" fill="white">
+      <path d="M2 21h3a1 1 0 001-1v-9a1 1 0 00-1-1H2v11zM22 11.5a2 2 0 00-2-2h-5.6l.8-3.6a1.7 1.7 0 00-3.1-1.3L9 9.3V21h9.5a2 2 0 001.9-1.4l1.5-5.8c.07-.24.1-.5.1-.75V11.5z" />
+    </svg>
+  );
+}
+
+const CONFIRM_ICONS = [StarIcon, ThumbsUpIcon];
 
 type ConfettiPiece = {
   id: number;
@@ -40,7 +57,7 @@ function makeConfetti(): ConfettiPiece[] {
 }
 
 export function DrinkCelebration({ goalReached, onConfirm }: Props) {
-  const [confirmIcon] = useState(() => randomPick(CONFIRM_ICONS));
+  const [ConfirmIcon] = useState(() => randomPick(CONFIRM_ICONS));
   const [confetti] = useState(makeConfetti);
   const [message] = useState(() => (goalReached ? "Você bateu a meta de hoje!" : randomPick(MESSAGES)));
 
@@ -73,7 +90,7 @@ export function DrinkCelebration({ goalReached, onConfirm }: Props) {
           aria-label="Continuar"
           onClick={onConfirm}
         >
-          {confirmIcon}
+          <ConfirmIcon />
         </button>
       </div>
     </div>
