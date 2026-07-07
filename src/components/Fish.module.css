@@ -30,6 +30,11 @@
   }
 }
 
+.emoji {
+  display: inline-block;
+  line-height: 1;
+}
+
 .bob {
   animation: bob 1.4s ease-in-out infinite alternate;
 }

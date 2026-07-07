@@ -82,7 +82,6 @@ export function DrinkCelebration({ goalReached, onConfirm }: Props) {
 
         <div className={styles.mascot}>{goalReached ? "🏆" : "🐠"}</div>
         <div className={styles.message}>{message}</div>
-        <div className={styles.subMessage}>Toca aqui pra continuar</div>
 
         <button
           type="button"

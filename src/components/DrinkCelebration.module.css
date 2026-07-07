@@ -43,7 +43,7 @@
 }
 
 .mascot {
-  font-size: 64px;
+  font-size: 128px;
   display: inline-block;
   animation: mascotBounce 900ms ease-in-out infinite;
 }
@@ -51,25 +51,18 @@
 @keyframes mascotBounce {
   0%,
   100% {
-    transform: translateY(0) rotate(-4deg);
+    transform: translateY(0) rotate(-4deg) scale(1);
   }
   50% {
-    transform: translateY(-14px) rotate(4deg);
+    transform: translateY(-18px) rotate(4deg) scale(1.06);
   }
 }
 
 .message {
-  margin-top: 12px;
-  font-size: 19px;
-  font-weight: 800;
-  color: var(--ink);
-}
-
-.subMessage {
-  margin-top: 4px;
-  font-size: 13px;
+  margin-top: 8px;
+  font-size: 16px;
+  font-weight: 700;
   color: var(--ink-soft);
-  font-weight: 600;
 }
 
 .confirmButton {

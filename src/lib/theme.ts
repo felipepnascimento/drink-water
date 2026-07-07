@@ -9,13 +9,6 @@ export const theme = {
   waterLight: "#6fd9d1",
   sand: "#e8c187",
   sandDark: "#c99a5b",
-  fish: {
-    coral: { body: "#ff8b6b", tail: "#e06a4a" },
-    sun: { body: "#ffd166", tail: "#e6b34e" },
-    mint: { body: "#7fe0da", tail: "#4bb7c4" },
-    leaf: { body: "#a5e9c8", tail: "#6fce9d" },
-    sky: { body: "#7fa8ff", tail: "#4f7fe0" },
-  },
   drinkButtonBorder: {
     small: "#3fb0ab",
     medium: "#1f8fa0",

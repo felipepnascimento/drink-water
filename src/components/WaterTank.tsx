@@ -1,25 +1,30 @@
 import { useEffect, useRef, useState } from "react";
-import { Fish, FishColor } from "./Fish";
-import { theme } from "../lib/theme";
+import { Fish } from "./Fish";
 import styles from "./WaterTank.module.css";
 
 type FishSpec = {
-  color: FishColor;
-  width: number;
+  emoji: string;
+  size: number;
   bottomPercent: number;
   direction: "leftToRight" | "rightToLeft";
   durationMs: number;
   delayMs: number;
 };
 
+// Emoji picked so kids recognize the cast even if they can't read yet:
+// 🐠 is the modal's own mascot, 🐡/🦈/🐬/🐢/🦀/🐙/🐳 read as
+// Nemo-and-friends style ocean pals from cartoons they already know.
 const SHOAL: FishSpec[] = [
-  { color: theme.fish.coral, width: 46, bottomPercent: 34, direction: "leftToRight", durationMs: 8000, delayMs: 0 },
-  { color: theme.fish.sun, width: 34, bottomPercent: 46, direction: "rightToLeft", durationMs: 6500, delayMs: 400 },
-  { color: theme.fish.mint, width: 26, bottomPercent: 26, direction: "leftToRight", durationMs: 9500, delayMs: 900 },
-  { color: theme.fish.coral, width: 20, bottomPercent: 39, direction: "rightToLeft", durationMs: 5200, delayMs: 1100 },
-  { color: theme.fish.leaf, width: 30, bottomPercent: 20, direction: "leftToRight", durationMs: 10500, delayMs: 2400 },
-  { color: theme.fish.sun, width: 18, bottomPercent: 51, direction: "leftToRight", durationMs: 7200, delayMs: 600 },
-  { color: theme.fish.sky, width: 24, bottomPercent: 15, direction: "rightToLeft", durationMs: 8800, delayMs: 3200 },
+  { emoji: "🐠", size: 72, bottomPercent: 34, direction: "leftToRight", durationMs: 8000, delayMs: 0 },
+  { emoji: "🐟", size: 54, bottomPercent: 46, direction: "rightToLeft", durationMs: 6500, delayMs: 400 },
+  { emoji: "🐡", size: 46, bottomPercent: 26, direction: "leftToRight", durationMs: 9500, delayMs: 900 },
+  { emoji: "🐠", size: 40, bottomPercent: 39, direction: "rightToLeft", durationMs: 5200, delayMs: 1100 },
+  { emoji: "🐬", size: 58, bottomPercent: 20, direction: "leftToRight", durationMs: 10500, delayMs: 2400 },
+  { emoji: "🦈", size: 64, bottomPercent: 51, direction: "leftToRight", durationMs: 11200, delayMs: 600 },
+  { emoji: "🐢", size: 50, bottomPercent: 15, direction: "rightToLeft", durationMs: 8800, delayMs: 3200 },
+  { emoji: "🦀", size: 34, bottomPercent: 8, direction: "leftToRight", durationMs: 7600, delayMs: 1800 },
+  { emoji: "🐙", size: 52, bottomPercent: 12, direction: "rightToLeft", durationMs: 9800, delayMs: 2900 },
+  { emoji: "🐳", size: 68, bottomPercent: 44, direction: "rightToLeft", durationMs: 12500, delayMs: 500 },
 ];
 
 type BurstBubbleSpec = {
@@ -79,8 +84,8 @@ export function WaterTank({ progress }: Props) {
       {SHOAL.map((fish, index) => (
         <Fish
           key={index}
-          color={fish.color}
-          width={fish.width}
+          emoji={fish.emoji}
+          size={fish.size}
           bottomPercent={fish.bottomPercent}
           direction={fish.direction}
           durationMs={fish.durationMs}
