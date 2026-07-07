@@ -1,7 +1,8 @@
-import { useCallback, useEffect, useState } from "react";
-import { Pressable, StyleSheet, Text, View } from "react-native";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { LayoutChangeEvent, Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { DrinkButton } from "../components/DrinkButton";
+import { FloatingDrop } from "../components/FloatingDrop";
 import { SettingsModal } from "../components/SettingsModal";
 import { WaterTank } from "../components/WaterTank";
 import {
@@ -9,15 +10,28 @@ import {
   getActiveChild,
   getTodayProgress,
   loadState,
+  resetTodayProgress,
   saveState,
   updateActiveChild,
 } from "../storage";
 import { theme } from "../theme";
 import { AppState } from "../types";
 
+const DRINK_SIZES = [
+  { key: "small" as const, fillRatio: 0.35, iconSize: 32, borderColor: theme.drinkButtonBorder.small },
+  { key: "medium" as const, fillRatio: 0.65, iconSize: 40, borderColor: theme.drinkButtonBorder.medium },
+  { key: "large" as const, fillRatio: 1, iconSize: 48, borderColor: theme.drinkButtonBorder.large },
+];
+
+let dropIdCounter = 0;
+
 export function AquariumScreen() {
   const [state, setState] = useState<AppState | null>(null);
   const [settingsVisible, setSettingsVisible] = useState(false);
+  const [controlsWidth, setControlsWidth] = useState(0);
+  const [drops, setDrops] = useState<{ id: number; left: number }[]>([]);
+  const stateRef = useRef<AppState | null>(null);
+  stateRef.current = state;
 
   useEffect(() => {
     loadState().then(setState);
@@ -28,6 +42,10 @@ export function AquariumScreen() {
     saveState(next);
   }, []);
 
+  const onControlsLayout = (event: LayoutChangeEvent) => {
+    setControlsWidth(event.nativeEvent.layout.width);
+  };
+
   if (!state) {
     return <View style={styles.screen} />;
   }
@@ -37,8 +55,20 @@ export function AquariumScreen() {
   const progressRatio = Math.min(1, todayProgress.amountMl / child.dailyGoalMl);
   const goalReached = todayProgress.amountMl >= child.dailyGoalMl;
 
-  const handleDrink = (amountMl: number) => {
-    persist(addDrink(state, amountMl));
+  const handleDrink = (amountMl: number, buttonIndex: number) => {
+    if (!stateRef.current) return;
+    persist(addDrink(stateRef.current, amountMl));
+
+    if (controlsWidth > 0) {
+      const buttonWidth = (controlsWidth - 16 * 2 - 10 * 2) / 3;
+      const left =
+        16 + buttonIndex * (buttonWidth + 10) + buttonWidth / 2 - 13;
+      setDrops((current) => [...current, { id: dropIdCounter++, left }]);
+    }
+  };
+
+  const removeDrop = (id: number) => {
+    setDrops((current) => current.filter((d) => d.id !== id));
   };
 
   return (
@@ -67,33 +97,31 @@ export function AquariumScreen() {
         <WaterTank progress={progressRatio} />
       </View>
 
-      <View style={styles.controls}>
-        <DrinkButton
-          label="Pouca"
-          amountMl={child.drinkSizesMl.small}
-          colors={theme.drinkButton.small as [string, string]}
-          onPress={() => handleDrink(child.drinkSizesMl.small)}
-        />
-        <DrinkButton
-          label="Média"
-          amountMl={child.drinkSizesMl.medium}
-          colors={theme.drinkButton.medium as [string, string]}
-          onPress={() => handleDrink(child.drinkSizesMl.medium)}
-        />
-        <DrinkButton
-          label="Muita"
-          amountMl={child.drinkSizesMl.large}
-          colors={theme.drinkButton.large as [string, string]}
-          onPress={() => handleDrink(child.drinkSizesMl.large)}
-        />
+      <View style={styles.controls} onLayout={onControlsLayout}>
+        {DRINK_SIZES.map((size, index) => (
+          <DrinkButton
+            key={size.key}
+            accessibilityLabel={`Beber ${size.key === "small" ? "pouca" : size.key === "medium" ? "média" : "muita"} água`}
+            fillRatio={size.fillRatio}
+            iconSize={size.iconSize}
+            borderColor={size.borderColor}
+            onPress={() => handleDrink(child.drinkSizesMl[size.key], index)}
+          />
+        ))}
       </View>
+
+      {drops.map((drop) => (
+        <FloatingDrop key={drop.id} left={drop.left} onDone={() => removeDrop(drop.id)} />
+      ))}
 
       <SettingsModal
         visible={settingsVisible}
         childName={child.name}
         dailyGoalMl={child.dailyGoalMl}
+        todayAmountMl={todayProgress.amountMl}
         onClose={() => setSettingsVisible(false)}
         onSave={(changes) => persist(updateActiveChild(state, changes))}
+        onResetToday={() => persist(resetTodayProgress(state))}
       />
     </SafeAreaView>
   );

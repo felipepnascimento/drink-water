@@ -37,19 +37,24 @@ precisar zerar nada manualmente.
 
 ## MVP — tela única
 
-- [ ] Header discreto: nome da criança ativa + engrenagem (⚙️) só para o
+- [x] Header discreto: nome da criança ativa + engrenagem (⚙️) só para o
       adulto configurar meta/perfis.
-- [ ] Aquário: nível da água = `amountMl / dailyGoalMl`, com animação de
+- [x] Aquário: nível da água = `amountMl / dailyGoalMl`, com animação de
       subida suave a cada toque.
-- [ ] Peixes nadando (SVG + `Animated`), várias no mesmo tanque para dar vida.
-- [ ] 3 botões fixos: **Pouca** (+100 ml) / **Média** (+200 ml) / **Muita**
-      (+350 ml) — valores editáveis nos ajustes.
-- [ ] Sem números na tela principal para a criança — só o desenho subindo.
-- [ ] Celebração ao bater 100% da meta (confete simples / peixe "feliz").
-- [ ] Modal de ajustes (adulto): definir meta diária em ml, cadastrar/editar
-      perfis de criança, editar os valores dos 3 botões.
-- [ ] Persistência via AsyncStorage, reset automático à meia-noite (baseado
+- [x] Peixes nadando (SVG + `Animated`), várias no mesmo tanque para dar vida.
+- [x] 3 botões fixos de copo (pouco / médio / cheio, sem texto — a criança
+      ainda não lê): valores editáveis nos ajustes.
+- [x] Sem números na tela principal para a criança — só o desenho subindo.
+- [x] Celebração ao bater 100% da meta (🎉).
+- [x] Reação animada ao beber: copo salta, gota flutua subindo, aquário dá
+      um "gulp" (bounce + flash) e solta bolhas extras na água.
+- [x] Modal de ajustes (adulto): definir meta diária em ml, editar nome da
+      criança, **zerar a água de hoje**.
+- [x] Persistência via AsyncStorage, reset automático à meia-noite (baseado
       na data do dia).
+- [ ] Editar os valores dos 3 tamanhos de copo (hoje fixos em 100/200/350 ml
+      no código).
+- [ ] Cadastrar/editar múltiplos perfis de criança pelos ajustes.
 
 ## Fora do MVP (backlog para depois)
 

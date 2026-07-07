@@ -17,9 +17,9 @@ export const theme = {
     leaf: { body: "#a5e9c8", tail: "#6fce9d" },
     sky: { body: "#7fa8ff", tail: "#4f7fe0" },
   },
-  drinkButton: {
-    small: ["#7fd8d0", "#3fb0ab"],
-    medium: ["#4bb7c4", "#1f8fa0"],
-    large: ["#2a92a6", "#0f6e82"],
+  drinkButtonBorder: {
+    small: "#3fb0ab",
+    medium: "#1f8fa0",
+    large: "#0f6e82",
   },
 };

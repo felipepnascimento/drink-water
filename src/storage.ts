@@ -67,6 +67,13 @@ export function addDrink(state: AppState, amountMl: number): AppState {
   };
 }
 
+export function resetTodayProgress(state: AppState): AppState {
+  const child = getActiveChild(state);
+  const key = todayKey(child.id);
+  const { [key]: _removed, ...restProgress } = state.progress;
+  return { ...state, progress: restProgress };
+}
+
 export function updateActiveChild(
   state: AppState,
   changes: Partial<Pick<Child, "name" | "dailyGoalMl" | "drinkSizesMl">>,

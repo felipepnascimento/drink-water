@@ -1,21 +1,25 @@
 import { useState } from "react";
-import { Modal, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { Alert, Modal, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
 import { theme } from "../theme";
 
 type Props = {
   visible: boolean;
   childName: string;
   dailyGoalMl: number;
+  todayAmountMl: number;
   onClose: () => void;
   onSave: (changes: { name: string; dailyGoalMl: number }) => void;
+  onResetToday: () => void;
 };
 
 export function SettingsModal({
   visible,
   childName,
   dailyGoalMl,
+  todayAmountMl,
   onClose,
   onSave,
+  onResetToday,
 }: Props) {
   const [name, setName] = useState(childName);
   const [goalText, setGoalText] = useState(String(dailyGoalMl));
@@ -27,6 +31,24 @@ export function SettingsModal({
       dailyGoalMl: Number.isFinite(parsedGoal) && parsedGoal > 0 ? parsedGoal : dailyGoalMl,
     });
     onClose();
+  };
+
+  const handleReset = () => {
+    Alert.alert(
+      "Zerar água de hoje?",
+      `Isso volta o aquário pra vazio (hoje ela já bebeu ${todayAmountMl} ml).`,
+      [
+        { text: "Cancelar", style: "cancel" },
+        {
+          text: "Zerar",
+          style: "destructive",
+          onPress: () => {
+            onResetToday();
+            onClose();
+          },
+        },
+      ],
+    );
   };
 
   return (
@@ -51,6 +73,10 @@ export function SettingsModal({
             keyboardType="number-pad"
             placeholder="1000"
           />
+
+          <Pressable style={styles.resetButton} onPress={handleReset}>
+            <Text style={styles.resetLabel}>Zerar água de hoje</Text>
+          </Pressable>
 
           <View style={styles.actions}>
             <Pressable style={styles.secondaryButton} onPress={onClose}>
@@ -104,10 +130,22 @@ const styles = StyleSheet.create({
     color: theme.ink,
     marginTop: 4,
   },
+  resetButton: {
+    marginTop: 18,
+    paddingVertical: 10,
+    borderRadius: 14,
+    alignItems: "center",
+    backgroundColor: "#fdeceb",
+  },
+  resetLabel: {
+    color: "#c0392b",
+    fontWeight: "700",
+    fontSize: 13,
+  },
   actions: {
     flexDirection: "row",
     gap: 10,
-    marginTop: 18,
+    marginTop: 10,
   },
   secondaryButton: {
     flex: 1,
