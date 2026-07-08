@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { playDrinkSound } from "../lib/audio";
 import { DrinkButton } from "./DrinkButton";
 import { DrinkCelebration } from "./DrinkCelebration";
 import { FloatingDrop } from "./FloatingDrop";
@@ -58,6 +59,7 @@ export function AquariumScreen() {
 
   const handleDrink = (amountMl: number, buttonIndex: number) => {
     persist(addDrink(state, amountMl));
+    playDrinkSound();
 
     const controlsWidth = controlsRef.current?.offsetWidth ?? 0;
     if (controlsWidth > 0) {
@@ -116,7 +118,11 @@ export function AquariumScreen() {
       ))}
 
       {celebrating && (
-        <DrinkCelebration goalReached={goalReached} onConfirm={() => setCelebrating(false)} />
+        <DrinkCelebration
+          goalReached={goalReached}
+          childName={child.name}
+          onConfirm={() => setCelebrating(false)}
+        />
       )}
 
       {settingsVisible && (
@@ -124,6 +130,7 @@ export function AquariumScreen() {
           childName={child.name}
           dailyGoalMl={child.dailyGoalMl}
           todayAmountMl={todayProgress.amountMl}
+          drinkSizesMl={child.drinkSizesMl}
           onClose={() => setSettingsVisible(false)}
           onSave={(changes) => persist(updateActiveChild(state, changes))}
           onResetToday={() => persist(resetTodayProgress(state))}

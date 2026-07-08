@@ -1,17 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { speakAsCharacter } from "../lib/audio";
 import styles from "./DrinkCelebration.module.css";
 
 type Props = {
   goalReached: boolean;
+  childName: string;
   onConfirm: () => void;
 };
 
-const MESSAGES = [
-  "Uau, o peixinho amou!",
-  "Isso aí! Bebeu água!",
-  "Muito bem, campeã!",
-  "O aquário agradece!",
-  "Você é demais!",
+const messages = (name: string) => [
+  `Uau, o peixinho amou, ${name}!`,
+  `Isso aí, ${name}! Bebeu água!`,
+  `Muito bem, ${name}!`,
+  `O aquário agradece, ${name}!`,
+  `Parabéns, ${name}! Você é demais!`,
 ];
 
 const CONFETTI_EMOJI = ["💧", "⭐", "✨", "🎉"];
@@ -56,10 +58,15 @@ function makeConfetti(): ConfettiPiece[] {
   }));
 }
 
-export function DrinkCelebration({ goalReached, onConfirm }: Props) {
+export function DrinkCelebration({ goalReached, childName, onConfirm }: Props) {
   const [ConfirmIcon] = useState(() => randomPick(CONFIRM_ICONS));
   const [confetti] = useState(makeConfetti);
-  const [message] = useState(() => (goalReached ? "Você bateu a meta de hoje!" : randomPick(MESSAGES)));
+  const [message] = useState(() => randomPick(messages(childName)));
+
+  useEffect(() => {
+    speakAsCharacter(message);
+    return () => window.speechSynthesis?.cancel();
+  }, [message]);
 
   return (
     <div className={styles.overlay}>
