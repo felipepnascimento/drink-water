@@ -1,54 +1,58 @@
-# Aquário da Sede 🐠
+# Water Tank 🐠
 
-App pessoal, feito para incentivar minha filha de 3 anos a beber água.
-Uma tela só: um aquário anima e enche conforme ela bebe, até bater a meta
-diária. Sem login, sem internet necessária depois de instalado, sem
-anúncio.
+Personal app, built to encourage my 3-year-old daughter to drink water.
+A single screen: a fish tank fills up with animated water as she drinks,
+until she hits her daily goal. No login, no internet needed once
+installed, no ads.
 
-É um PWA (Next.js): abre pelo navegador e pode ser "instalado" na tela de
-início do celular, sem passar por loja de aplicativos.
+It's a PWA (Next.js): opens in the browser and can be "installed" on the
+phone's home screen, no app store involved.
 
-![Demonstração do aquário enchendo conforme a criança bebe água](./docs/aquario-demo.gif)
+![Demo of the tank filling up as the child drinks water](./docs/aquario-demo.gif)
 
-## Como funciona
+## How it works
 
-- Ela toca num dos três copos (pouco / médio / cheio — sem texto, ela ainda
-  não lê) a cada golpe de água.
-- O aquário enche aos poucos, com o cardume de peixes nadando, e reage com
-  uma animação (bounce + bolhas + gota flutuando) a cada toque.
-- Ao bater a meta do dia, o aquário celebra com um 🎉.
-- Um adulto configura a meta diária, o nome da criança e pode zerar a água
-  de hoje na engrenagem (⚙️).
+- She taps one of three cups (small / medium / large — no text, she can't
+  read yet) each time she drinks.
+- The tank fills up gradually, with a school of fish swimming around, and
+  reacts with an animation (bounce + bubbles + a floating drop) on every
+  tap. A chime plays and a playful voice narrates a message out loud.
+- When she hits the daily goal, the tank celebrates with a 🎉 and a
+  randomized, name-personalized message read aloud.
+- An adult configures the daily goal, the child's name, the ml amount for
+  each cup size, and can reset today's water from the gear icon (⚙️).
 
 ## Stack
 
 - [Next.js](https://nextjs.org) (App Router + TypeScript)
-- SVG + CSS (keyframes/transitions) para as animações — sem lib externa
-- `localStorage` para salvar o progresso — tudo local, sem backend e sem
-  conta
-- Manifest + service worker próprios para funcionar como PWA instalável
+- SVG + CSS (keyframes/transitions) for the animations — no external
+  animation library
+- Web Speech API + synthesized audio for the drink chime and voice
+  narration
+- `localStorage` to save progress — everything local, no backend and no
+  account
+- Custom manifest + service worker to work as an installable PWA
 
-## Rodando localmente
+## Running locally
 
 ```bash
 npm install
 npm run dev
 ```
 
-Abra [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000).
 
 ## Deploy
 
-Pensado pra rodar na [Vercel](https://vercel.com): conecta o repositório e
-cada push na `main` já builda e publica.
+Meant to run on [Vercel](https://vercel.com): connect the repository and
+every push to `main` builds and publishes automatically.
 
-## Instalar no celular
+## Installing on a phone
 
-Abra a URL publicada no Safari (iOS) ou Chrome (Android) e use
-"Adicionar à Tela de Início" — o app abre em tela cheia, como um app
-nativo.
+Open the published URL in Safari (iOS) or Chrome (Android) and use "Add
+to Home Screen" — the app opens full-screen, like a native app.
 
-## Planejamento
+## Planning
 
-Veja [`TODO.md`](./TODO.md) para o escopo do MVP e o backlog de ideias
-futuras (notificações, histórico semanal, sons, múltiplos perfis).
+See [`TODO.md`](./TODO.md) for the MVP scope and the backlog of future
+ideas (notifications, weekly history, multiple profiles).

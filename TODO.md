@@ -1,25 +1,29 @@
-# Aquário da Sede — plano e TODO
+# Water Tank — plan and TODO
 
-PWA (Next.js) para incentivar uma criança pequena a beber água. Tela única
-com um aquário animado: a água sobe conforme a criança bebe, até bater a
-meta diária. Sem backend — tudo salvo no navegador (`localStorage`).
+PWA (Next.js) to encourage a small child to drink water. Single screen
+with an animated fish tank: the water rises as the child drinks, until
+she hits the daily goal. No backend — everything is saved in the browser
+(`localStorage`).
 
-Código (variáveis, componentes, arquivos) em **inglês**. Textos exibidos na
-tela em **pt-BR**.
+Code (variables, components, files) in **English**. Text shown on screen
+in **pt-BR**.
 
 ## Stack
 
-- Next.js (App Router + TypeScript), deploy na Vercel
-- `localStorage` para persistência local (sem backend, sem conta)
-- SVG + CSS (keyframes/transitions) para os peixes, a água e as animações —
-  sem libs de animação externas
-- Manifest + service worker próprios para instalar como PWA (sem `next-pwa`)
+- Next.js (App Router + TypeScript), deployed on Vercel
+- `localStorage` for local persistence (no backend, no account)
+- SVG + CSS (keyframes/transitions) for the fish, the water, and the
+  animations — no external animation libraries
+- Web Speech API + synthesized audio for the drink chime and voice
+  narration
+- Custom manifest + service worker to install as a PWA (no `next-pwa`)
 
-> Já foi um app Expo/React Native — migrado pra Next.js pra rodar como PWA
-> (instala direto do navegador, sem Expo Go/App Store/SDK compat) e fazer
-> deploy contínuo na Vercel.
+> This used to be an Expo/React Native app — migrated to Next.js to run
+> as a PWA (installs straight from the browser, no Expo Go/App
+> Store/SDK compatibility issues) and to get continuous deploys on
+> Vercel.
 
-## Modelo de dados (local)
+## Local data model
 
 ```ts
 type Child = { id: string; name: string; dailyGoalMl: number };
@@ -31,53 +35,55 @@ type DayProgress = { amountMl: number; drinks: Drink[] };
 type AppState = {
   children: Child[];
   activeChildId: string;
-  // chave: `${childId}_${YYYY-MM-DD}`
+  // key: `${childId}_${YYYY-MM-DD}`
   progress: Record<string, DayProgress>;
 };
 ```
 
-O reset diário é automático: cada dia vira uma chave nova em `progress`, sem
-precisar zerar nada manualmente.
+The daily reset is automatic: each day becomes a new key in `progress`,
+no manual reset needed.
 
-## MVP — tela única
+## MVP — single screen
 
-- [x] Header discreto: nome da criança ativa + engrenagem (⚙️) só para o
-      adulto configurar meta/perfis.
-- [x] Aquário: nível da água = `amountMl / dailyGoalMl`, com animação de
-      subida suave a cada toque.
-- [x] Peixes nadando (SVG + CSS keyframes), várias no mesmo tanque para dar
-      vida.
-- [x] 3 botões fixos de copo (pouco / médio / cheio, sem texto — a criança
-      ainda não lê): valores editáveis nos ajustes.
-- [x] Sem números na tela principal para a criança — só o desenho subindo.
-- [x] Celebração ao bater 100% da meta (🎉).
-- [x] Reação animada ao beber: copo salta, gota flutua subindo, aquário dá
-      um "gulp" (bounce + flash) e solta bolhas extras na água.
-- [x] Modal de ajustes (adulto): definir meta diária em ml, editar nome da
-      criança, **zerar a água de hoje**.
-- [x] Persistência via `localStorage`, reset automático à meia-noite
-      (baseado na data do dia).
-- [x] PWA instalável (manifest + ícones + service worker básico).
-- [ ] Editar os valores dos 3 tamanhos de copo (hoje fixos em 100/200/350 ml
-      no código).
-- [ ] Cadastrar/editar múltiplos perfis de criança pelos ajustes.
+- [x] Discreet header: active child's name + gear icon (⚙️) only for the
+      adult to configure goal/profiles.
+- [x] Tank: water level = `amountMl / dailyGoalMl`, with a smooth rising
+      animation on every tap.
+- [x] Swimming fish (SVG + CSS keyframes), several in the same tank for
+      liveliness.
+- [x] 3 fixed cup buttons (small / medium / large, no text — the child
+      can't read yet): values editable in settings.
+- [x] No numbers on the main screen for the child — just the drawing
+      rising.
+- [x] Celebration on hitting 100% of the goal (🎉), with a randomized,
+      name-personalized message read aloud.
+- [x] Animated reaction on drinking: cup bounces, a drop floats up, the
+      tank does a "gulp" (bounce + flash), extra bubbles in the water,
+      plus a chime and voice narration.
+- [x] Settings modal (adult): set the daily goal in ml, edit the child's
+      name, configure the ml amount for each cup size, **reset today's
+      water**.
+- [x] Persistence via `localStorage`, automatic reset at midnight (based
+      on the day's date).
+- [x] Installable PWA (manifest + icons + basic service worker).
+- [ ] Register/edit multiple child profiles from settings.
 
-## Fora do MVP (backlog para depois)
+## Out of MVP (backlog for later)
 
-- [ ] Notificação lembrando de beber água (Web Push — precisa de permissão
-      do usuário e é limitado em iOS Safari).
-- [ ] Histórico semanal simples (quantos dias a meta foi batida).
-- [ ] Sons/vozes de incentivo ao tocar nos botões ou ao completar a meta.
-- [ ] Múltiplos temas de aquário (dia/noite, fundo do mar, etc).
-- [ ] Suporte a mais de uma criança com troca rápida de perfil na tela
-      principal (hoje só troca pelos ajustes).
-- [ ] Exportar/backup do progresso (ex: compartilhar um resumo por imagem).
+- [ ] Notification reminding to drink water (Web Push — needs user
+      permission and is limited on iOS Safari).
+- [ ] Simple weekly history (how many days the goal was hit).
+- [ ] Multiple tank themes (day/night, ocean floor, etc).
+- [ ] Support for more than one child with quick profile switching on
+      the main screen (currently only switchable via settings).
+- [ ] Export/backup progress (e.g. share a summary as an image).
 
-## Decisões já tomadas
+## Decisions already made
 
-- Sem backend, sem login — 100% offline, um único dispositivo/navegador.
-- App gratuito, sem anúncios previstos no MVP.
-- Uma tela só; ajustes ficam atrás da engrenagem para não distrair a
-  criança.
-- PWA em vez de app nativo: instala direto do Safari/Chrome, sem loja e sem
-  builds nativos; deploy é só dar push (Vercel builda e publica).
+- No backend, no login — 100% offline, single device/browser.
+- Free app, no ads planned for the MVP.
+- Single screen; settings live behind the gear icon so they don't
+  distract the child.
+- PWA instead of a native app: installs straight from Safari/Chrome, no
+  store and no native builds; deploying is just a push (Vercel builds
+  and publishes).
